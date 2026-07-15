@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Lakshuu 💗</title>
+    <!-- Tailwind CSS and Canvas-Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffe4e6 0%, #fbcfe8 50%, #f472b6 100%);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 1.5s ease;
+        }
+        .cursive {
+            font-family: 'Sacramento', cursive;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(244, 114, 182, 0.2);
+            transition: all 0.5s ease;
+        }
+        .screen {
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+        }
+        /* Scan Animation Line */
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+        .scan-line {
+            animation: scan 2s linear infinite;
+        }
+        /* Heart Rotation Motion */
+        @keyframes heartSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.15); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        .rotating-heart {
+            animation: heartSpin 3s linear infinite;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex items-center justify-center p-4 select-none">
+
+    <!-- Background Particles -->
+    <div id="particle-container" class="absolute inset-0 overflow-hidden z-0 hidden"></div>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="screen fixed inset-0 z-50 bg-rose-100 flex flex-col items-center justify-center">
+        <div class="text-4xl mb-4 text-pink-500 animate-bounce">🌸</div>
+        <div class="w-48 bg-pink-200 h-2 rounded-full overflow-hidden">
+            <div id="progress-bar" class="bg-pink-500 h-full w-0 transition-all duration-300 ease-out"></div>
+        </div>
+        <p class="text-xs text-pink-600 mt-2 tracking-widest uppercase">Opening Your Surprise...</p>
+    </div>
+
+    <!-- MUSIC BUTTON -->
+    <button id="music-btn" class="hidden fixed top-4 right-4 z-40 glass p-3 rounded-full text-xl shadow-lg">
+        🎵
+    </button>
+    
+    <audio id="bg-music" loop src="https://files.catbox.moe/qy4tat.mp3"></audio> 
+
+    <!-- MAIN GLASS CONTAINER -->
+    <div id="main-container" class="w-full max-w-md glass rounded-3xl p-6 z-10 min-h-[70vh] flex flex-col justify-center items-center text-center relative overflow-hidden">
+        
+        <!-- SCREEN 1: THE ENTER GATE -->
+        <div id="screen-1" class="screen w-full flex flex-col items-center justify-center">
+            <h1 class="text-2xl font-semibold text-rose-700 leading-relaxed mb-2">Hey Lakshuu... 💗</h1>
+            <p class="text-md text-rose-600 mb-8">Before you continue...<br>I made something just for you. 🌸</p>
+            <button onclick="startMagic()" class="px-8 py-4 bg-pink-500 text-white font-medium rounded-full shadow-md hover:bg-pink-600 transform active:scale-95 transition-all text-lg">
+                Touch Here ❤️
+            </button>
+        </div>
+
+        <!-- SCREEN 2: TYPEWRITER (Happy Birthday Lakshuu) -->
+        <div id="screen-2" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <div class="text-6xl mb-4 animate-pulse">✨</div>
+            <h1 id="typewriter" class="text-3xl font-bold text-rose-700 min-h-[80px] leading-relaxed"></h1>
+            <button onclick="nextScreen(2, 3)" id="next-to-letter" class="hidden mt-8 px-6 py-3 bg-pink-500 text-white font-medium rounded-full shadow-md transform active:scale-95 transition-all">
+                Open My Letter 💌
+            </button>
+        </div>
+
+        <!-- SCREEN 3: LOVE LETTER -->
+        <div id="screen-3" class="screen hidden w-full flex flex-col items-center opacity-0">
+            <h2 class="cursive text-5xl text-rose-600 mb-4 font-bold">To My Wifyy... 💗</h2>
+            <div class="w-full bg-white/50 p-5 rounded-2xl text-sm text-left leading-relaxed text-rose-950 shadow-inner max-h-80 overflow-y-auto mb-6">
+                Happy Birthday, Bby. 🎂❤️<br><br>
+                I don't think I've ever told you this properly... but if you weren't in my life, I probably would've never known what it truly feels like to be loved. You made me feel something that no one else ever could. You made me feel cared for, understood, important... and most importantly, loved. You became my comfort, my safe place, and the person who made my heart feel at home. And honestly, that's one of the greatest gifts life has ever given me.<br><br>
+                There are so many memories that I'll always carry with me, but if I had to pick my favorites... it'd be the day we shared our first kiss and those two hugs. 🥹❤️ Those moments may have lasted only a little while, but they'll stay with me forever. Every time I think about them, they remind me how lucky I am to have you.<br><br>
+                And Bby... there's something I want you to know.<br><br>
+                I love you more than you could ever imagine. More than my words can ever explain. ❤️<br><br>
+                If I had the chance to choose all over again, I'd still choose you. In this life, in the next one, and every life after that. You're my favorite person, my comfort, my peace, and the best part of my every day.<br><br>
+                Promise me you'll never stop smiling, okay? Because your smile is my favorite view in the whole world. 🌸<br><br>
+                So today, forget all the stress, eat lots of cake, laugh your heart out, and enjoy every second... because today belongs to my birthday girl. 🎀<br><br>
+                Happy Birthday, Babe. 💗<br><br>
+                I love you more than you think, more than you'll ever know, and I'll keep choosing you—again and again, every single time. Forever. 🤍✨
+            </div>
+            <button onclick="nextScreen(3, 5)" class="px-6 py-3 bg-pink-500 text-white font-medium rounded-full shadow-md transform active:scale-95 transition-all">
+                Time for Cake 🍰
+            </button>
+        </div>
+
+        <!-- SCREEN 5: INTERACTIVE CAKE -->
+        <div id="screen-5" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <h2 class="text-2xl font-semibold text-rose-700 mb-2">Make a Wish! 🌟</h2>
+            <p class="text-xs text-rose-500 mb-6">Tap the cake to blow out the candle</p>
+            
+            <div id="cake-box" class="cursor-pointer transform hover:scale-105 transition-transform duration-300 relative my-6 flex flex-col items-center w-full">
+                <!-- Flame Elements -->
+                <div id="flame" class="w-4 h-6 bg-orange-400 rounded-full absolute top-[5px] animate-ping origin-bottom z-20"></div>
+                <div id="flame-core" class="w-3 h-5 bg-yellow-300 rounded-full absolute top-[8px] origin-bottom z-20"></div>
+                
+                <!-- Cute Aesthetic Cake Image -->
+                <img src="https://img.icons8.com/emoji/256/birthday-cake-emoji.png" alt="Birthday Cake" class="w-40 h-40 object-contain drop-shadow-xl relative z-10">
+            </div>
+
+            <button id="cake-next" onclick="nextScreen(5, 6)" class="hidden mt-8 px-6 py-3 bg-pink-500 text-white font-medium rounded-full shadow-md transform active:scale-95 transition-all">
+                Your Final Surprise 🎁
+            </button>
+        </div>
+
+        <!-- SCREEN 6: GIFT BOX -->
+        <div id="screen-6" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <div id="gift-box" onclick="goToFingerprint()" class="text-7xl cursor-pointer animate-bounce duration-1000">🎁</div>
+            <h2 class="text-xl font-semibold text-rose-700 mt-4">Tap the box to open your final gift!</h2>
+        </div>
+
+        <!-- SCREEN 6B: FINGERPRINT SCANNER -->
+        <div id="screen-6b" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <h2 id="scan-title" class="text-xl font-semibold text-rose-700 mb-2">Identity Verification Required 🔐</h2>
+            <p id="scan-desc" class="text-xs text-rose-500 mb-8">Put your thumb on the scanner to verify it's you, Lakshuu</p>
+            
+            <div id="scanner-pad" onmousedown="startScanning()" ontouchstart="startScanning()" onmouseup="stopScanning()" ontouchend="stopScanning()" class="w-32 h-44 border-4 border-pink-400/60 rounded-2xl bg-pink-50/50 relative flex items-center justify-center overflow-hidden cursor-pointer shadow-md active:scale-95 transition-all">
+                <div id="laser" class="hidden absolute left-0 right-0 h-1 bg-pink-500 shadow-[0_0_8px_#ec4899] scan-line z-20"></div>
+                
+                <div id="fingerprints" class="relative w-full h-full flex items-center justify-center opacity-40 transition-all duration-500">
+                    <img id="thumb-left" src="https://img.icons8.com/ios/150/f472b6/fingerprint.png" class="w-20 h-20 absolute transition-all duration-700">
+                    <img id="thumb-right" src="https://img.icons8.com/ios/150/f472b6/fingerprint.png" class="w-20 h-20 absolute opacity-0 scale-50 transition-all duration-700">
+                    <span id="scan-heart" class="absolute text-2xl scale-0 opacity-0 transition-all duration-700 z-30">❤️</span>
+                </div>
+            </div>
+            
+            <p id="scan-status" class="text-xs font-medium text-pink-600 mt-6 tracking-wide animate-pulse">HOLD AND PRESS TO SCAN</p>
+        </div>
+
+        <!-- SCREEN 6C: MARRIAGE CERTIFICATE -->
+        <div id="screen-6c" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <div class="w-full bg-amber-50 border-[6px] border-amber-600 p-4 rounded-xl shadow-2xl relative text-slate-800">
+                <div class="absolute top-1 left-1 text-amber-600 text-xs">◆</div>
+                <div class="absolute top-1 right-1 text-amber-600 text-xs">◆</div>
+                <div class="absolute bottom-1 left-1 text-amber-600 text-xs">◆</div>
+                <div class="absolute bottom-1 right-1 text-amber-600 text-xs">◆</div>
+
+                <h3 class="font-serif tracking-widest text-xs uppercase text-amber-800 font-bold mb-1">Certificate of Togetherness</h3>
+                <div class="w-24 h-[1px] bg-amber-600 mx-auto mb-3"></div>
+                
+                <p class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">This document proudly certifies that</p>
+                <h4 class="cursive text-4xl text-rose-600 font-bold my-1">Lakshuu</h4>
+                
+                <p class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">is officially and un-preventably</p>
+                <p class="text-md font-bold tracking-wide text-amber-900 uppercase my-1">Married to Harshit Now ❤️</p>
+                
+                <!-- 📜 UPDATED TERMS & CONDITIONS -->
+                <div class="w-full bg-white/60 rounded-lg p-3 my-3 text-[11px] text-left leading-relaxed text-slate-700 border border-amber-200">
+                    <strong>📜 Terms & Conditions:</strong><br>
+                    • 🌸 Good morning & good night texts are compulsory.<br>
+                    • 💌 Random "I love you" messages are compulsory.<br>
+                    • 💍 I'll always choose you, over and over again.<br>
+                    • ♾️ Validity: This life, every next life... and forever. ❤️
+                </div>
+
+                <div class="flex justify-between items-center px-4 mt-2">
+                    <div class="text-center">
+                        <div class="cursive text-lg text-slate-800 border-b border-slate-400 px-2">Harshit</div>
+                        <p class="text-[9px] text-slate-400 mt-1 uppercase">Signature</p>
+                    </div>
+                    
+                    <!-- 💖 ROTATING DIL WITH EXTRA MOTION & SLIGHTLY BIGGER SIZE -->
+                    <div class="text-4xl rotating-heart">💗</div>
+                    
+                    <div class="text-center">
+                        <div class="cursive text-lg text-rose-600 border-b border-slate-400 px-2">Lakshuu</div>
+                        <p class="text-[9px] text-slate-400 mt-1 uppercase">Wife's Sign</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="goToFinalOutro()" class="mt-6 px-6 py-3 bg-pink-500 text-white font-medium rounded-full shadow-md transform active:scale-95 transition-all">
+                Proceed to Forever ✨
+            </button>
+        </div>
+
+        <!-- SCREEN 7: THE ULTIMATE DARK OUTRO SCREEN -->
+        <div id="screen-7" class="screen hidden w-full flex flex-col items-center justify-center opacity-0">
+            <p id="final-typewriter" class="text-lg font-medium text-rose-200 px-4 leading-relaxed min-h-[80px]"></p>
+            <p id="credit-text" class="hidden text-xs text-rose-400 mt-8 tracking-widest uppercase transition-opacity duration-1000 opacity-0">
+                Made especially for you ❤️
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Loading Screen Logic
+        let progress = 0;
+        const progBar = document.getElementById('progress-bar');
+        const loadInterval = setInterval(() => {
+            progress += Math.floor(Math.random() * 15) + 5;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.opacity = '0';
+                    setTimeout(() => document.getElementById('loading-screen').classList.add('hidden'), 500);
+                }, 400);
+            }
+            progBar.style.width = progress + '%';
+        }, 80);
+
+        // Music Controls (FORCE VOLUME TO 60% ON PLAY)
+        const musicBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-music');
+        let isPlaying = false;
+        
+        // Strictly set volume on page load
+        audio.volume = 0.6;
+
+        function playMusicWithVolume() {
+            audio.volume = 0.6; // Double safe check
+            audio.play().catch(e => console.log("Audio block bypass"));
+            musicBtn.innerText = '⏸️';
+            isPlaying = true;
+        }
+
+        musicBtn.onclick = () => {
+            if(!isPlaying) {
+                playMusicWithVolume();
+            } else {
+                audio.pause();
+                musicBtn.innerText = '🎵';
+                isPlaying = false;
+            }
+        };
+
+        function startMagic() {
+            const pContainer = document.getElementById('particle-container');
+            pContainer.classList.remove('hidden');
+            startParticles();
+            nextScreen(1, 2);
+            setTimeout(startTypewriter1, 600);
+        }
+
+        function startParticles() {
+            const pContainer = document.getElementById('particle-container');
+            const particles = ['🌸', '💗', '🌺', '✨', '❤️'];
+            setInterval(() => {
+                const char = particles[Math.floor(Math.random() * particles.length)];
+                const div = document.createElement('div');
+                div.className = 'particle';
+                div.innerText = char;
+                div.style.left = Math.random() * 100 + 'vw';
+                div.style.top = '105vh';
+                div.style.fontSize = (Math.random() * 20 + 12) + 'px';
+                div.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                pContainer.appendChild(div);
+                setTimeout(() => div.remove(), 6000);
+            }, 300);
+        }
+
+        const txt1 = "Happy Birthday, Lakshuu! ✨ You mean the absolute world to me...";
+        let i = 0;
+        function startTypewriter1() {
+            if (i < txt1.length) {
+                document.getElementById("typewriter").innerHTML += txt1.charAt(i);
+                i++;
+                setTimeout(startTypewriter1, 50);
+            } else {
+                document.getElementById('next-to-letter').classList.remove('hidden');
+            }
+        }
+
+        function nextScreen(current, next) {
+            const curEl = document.getElementById(`screen-${current}`);
+            const nextEl = document.getElementById(`screen-${next}`);
+            if (curEl && nextEl) {
+                curEl.style.opacity = '0';
+                curEl.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    curEl.classList.add('hidden');
+                    nextEl.classList.remove('hidden');
+                    setTimeout(() => {
+                        nextEl.style.opacity = '1';
+                        nextEl.style.transform = 'scale(1)';
+                    }, 50);
+                }, 400);
+            }
+        }
+
+        function nextScreenCustom(curId, nextId) {
+            const curEl = document.getElementById(curId);
+            const nextEl = document.getElementById(nextId);
+            curEl.style.opacity = '0';
+            curEl.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                curEl.classList.add('hidden');
+                nextEl.classList.remove('hidden');
+                setTimeout(() => {
+                    nextEl.style.opacity = '1';
+                    nextEl.style.transform = 'scale(1)';
+                }, 50);
+            }, 400);
+        }
+
+        const cake = document.getElementById('cake-box');
+        cake.onclick = () => {
+            document.getElementById('flame').classList.add('hidden');
+            document.getElementById('flame-core').classList.add('hidden');
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            document.getElementById('cake-next').classList.remove('hidden');
+        };
+
+        function goToFingerprint() {
+            const gift = document.getElementById('gift-box');
+            gift.innerHTML = '💥';
+            confetti({ particleCount: 100, spread: 60 });
+            setTimeout(() => {
+                nextScreenCustom('screen-6', 'screen-6b');
+            }, 500);
+        }
+
+        let scanTimer;
+        let isScanning = false;
+
+        function startScanning() {
+            if(isScanning) return;
+            document.getElementById('laser').classList.remove('hidden');
+            document.getElementById('scan-status').innerText = "SCANNING YOUR IDENTITY...";
+            document.getElementById('fingerprints').style.opacity = "1";
+            
+            scanTimer = setTimeout(() => {
+                isScanning = true;
+                document.getElementById('laser').classList.add('hidden');
+                document.getElementById('scan-status').innerText = "MATCH FOUND! GENERATING HARSHIT'S THUMB...";
+                
+                const leftT = document.getElementById('thumb-left');
+                const rightT = document.getElementById('thumb-right');
+                const heart = document.getElementById('scan-heart');
+                
+                leftT.style.transform = "translateX(-20px)";
+                rightT.classList.remove('opacity-0');
+                rightT.style.opacity = "1";
+                rightT.style.transform = "translateX(20px) scale(1)";
+                
+                setTimeout(() => {
+                    heart.style.opacity = "1";
+                    heart.style.transform = "scale(1.5)";
+                    document.getElementById('scan-status').innerText = "IDENTITY LOCKED FOREVER! 🔒";
+                    
+                    // 🎵 GAANA YAHAN PAR TRIGGER HOGA JAISE HI SCAN COMPLETE HOGA
+                    musicBtn.classList.remove('hidden');
+                    playMusicWithVolume();
+                    
+                    confetti({ particleCount: 100, spread: 50 });
+                    
+                    setTimeout(() => {
+                        nextScreenCustom('screen-6b', 'screen-6c');
+                    }, 1500);
+                }, 1000);
+            }, 2000); 
+        }
+
+        function stopScanning() {
+            if(isScanning) return;
+            clearTimeout(scanTimer);
+            document.getElementById('laser').classList.add('hidden');
+            document.getElementById('scan-status').innerText = "HOLD AND PRESS TO SCAN";
+            document.getElementById('fingerprints').style.opacity = "0.4";
+        }
+
+        function goToFinalOutro() {
+            document.body.style.background = '#0f172a'; 
+            const container = document.getElementById('main-container');
+            container.style.background = 'rgba(15, 23, 42, 0.6)';
+            container.style.border = '1px solid rgba(255,255,255,0.1)';
+            
+            nextScreenCustom('screen-6c', 'screen-7');
+            setTimeout(startFinalTypewriter, 600);
+        }
+
+        const finalTxt = "Every heartbeat whispered the same thing today... I Love You So Much Lakshuu. Happy Birthday! 💗🌸";
+        let j = 0;
+        function startFinalTypewriter() {
+            if (j < finalTxt.length) {
+                document.getElementById("final-typewriter").innerHTML += finalTxt.charAt(j);
+                j++;
+                setTimeout(startFinalTypewriter, 60);
+            } else {
+                const credit = document.getElementById('credit-text');
+                credit.classList.remove('hidden');
+                setTimeout(() => { credit.style.opacity = '1'; }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
